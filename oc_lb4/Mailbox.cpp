@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Mailbox::Mailbox(LPCTSTR directory, LPCTSTR file)
+Mailbox::Mailbox(LPCTSTR directory, LPCTSTR file) //консруктор класу 
 {
     _tcscpy_s(directoryName, directory);
     _tcscpy_s(fileName, file);
@@ -11,7 +11,7 @@ Mailbox::Mailbox(LPCTSTR directory, LPCTSTR file)
     _stprintf_s(fullPath, MAX_PATH, _T("%s\\%s"), directoryName, fileName);
 }
 
-BOOL Mailbox::Create(DWORD maxSize)
+BOOL Mailbox::Create(DWORD maxSize)              //створює нову поштову скриньку
 {
     CreateDirectory(directoryName, NULL);
 
@@ -69,11 +69,11 @@ BOOL Mailbox::Create(DWORD maxSize)
     return TRUE;
 }
 
-BOOL Mailbox::ReadHeader(MailboxHeader* header)
+BOOL Mailbox::ReadHeader(MailboxHeader* header)   //читає заголовок скриньки 
 {
     HANDLE hFile = CreateFile(
         fullPath,
-        GENERIC_READ,
+        GENERIC_READ, //тока для читання
         FILE_SHARE_READ,
         NULL,
         OPEN_EXISTING,
@@ -99,11 +99,11 @@ BOOL Mailbox::ReadHeader(MailboxHeader* header)
     return result && bytesRead == sizeof(MailboxHeader);
 }
 
-BOOL Mailbox::WriteHeader(const MailboxHeader* header)
+BOOL Mailbox::WriteHeader(const MailboxHeader* header)  //перезапис заголовку скриньки
 {
     HANDLE hFile = CreateFile(
         fullPath,
-        GENERIC_WRITE,
+        GENERIC_WRITE,   //файл для запису
         0,
         NULL,
         OPEN_EXISTING,
@@ -129,7 +129,7 @@ BOOL Mailbox::WriteHeader(const MailboxHeader* header)
     return result && bytesWritten == sizeof(MailboxHeader);
 }
 
-DWORD Mailbox::CalculateChecksum(DWORD bytesToRead)
+DWORD Mailbox::CalculateChecksum(DWORD bytesToRead)             //обчисл контрольну суму
 {
     HANDLE hFile = CreateFile(
         fullPath,
@@ -174,7 +174,7 @@ DWORD Mailbox::CalculateChecksum(DWORD bytesToRead)
     return checksum;
 }
 
-BOOL Mailbox::UpdateChecksum()
+BOOL Mailbox::UpdateChecksum()              //оновл контрольну суму після змін у файлі
 {
     HANDLE hFile = CreateFile(
         fullPath,
@@ -224,7 +224,7 @@ BOOL Mailbox::UpdateChecksum()
     return result && bytesWritten == sizeof(DWORD);
 }
 
-BOOL Mailbox::VerifyChecksum()
+BOOL Mailbox::VerifyChecksum()          //чи не пошкождено файл
 {
     HANDLE hFile = CreateFile(
         fullPath,

@@ -28,7 +28,7 @@ void PrintMenu()
     _tprintf(_T("0. Exit\n"));
 }
 
-void MakeMailboxFileName(TCHAR* result, DWORD size)
+void MakeMailboxFileName(TCHAR* result, DWORD size)  //форм імя пошт скриньки
 {
     TCHAR name[MAX_PATH];
 
@@ -56,7 +56,7 @@ void MakeMailboxFileName(TCHAR* result, DWORD size)
     _stprintf_s(result, size, _T("%s.mbx"), name);
 }
 
-BOOL FileExists(LPCTSTR directory, LPCTSTR fileName)
+BOOL FileExists(LPCTSTR directory, LPCTSTR fileName)  //чи існ файл
 {
     TCHAR fullPath[MAX_PATH];
 
@@ -87,8 +87,8 @@ int _tmain()
     const TCHAR directory[] = _T("Mailboxes");
 
     Mailbox* mailbox = NULL;
-    BOOL mailboxOpened = FALSE;
-    BOOL mailboxBlocked = FALSE;
+    BOOL mailboxOpened = FALSE; //чи відкр скринька
+    BOOL mailboxBlocked = FALSE; //чи забл скринька
 
     TCHAR mailboxFile[MAX_PATH];
     TCHAR message[500];
@@ -114,7 +114,7 @@ int _tmain()
 
         switch (command)
         {
-        case 1:
+        case 1:                                                     //створення скриньки
             MakeMailboxFileName(mailboxFile, MAX_PATH);
             if (_tcslen(mailboxFile) == 0)
             {
@@ -142,7 +142,7 @@ int _tmain()
 
             break;
 
-        case 2:
+        case 2:                                                     //відкриття скриньки 
             MakeMailboxFileName(mailboxFile, MAX_PATH);
             if (_tcslen(mailboxFile) == 0)
             {
@@ -174,7 +174,7 @@ int _tmain()
 
             break;
 
-        case 3:
+        case 3:                                                 //додавання повідомлення
             if (!mailboxOpened || mailbox == NULL)
             {
                 _tprintf(_T("Open or create mailbox first.\n"));
@@ -199,7 +199,7 @@ int _tmain()
             mailbox->AddMessage(message);
             break;
 
-        case 4:
+        case 4:                                             //читання повідомлення без видалення
             if (!mailboxOpened || mailbox == NULL)
             {
                 _tprintf(_T("Open or create mailbox first.\n"));
@@ -225,7 +225,7 @@ int _tmain()
             mailbox->ReadMessage(number, FALSE);
             break;
 
-        case 5:
+        case 5:                                     //читання повідомлення з видаленням
             if (!mailboxOpened || mailbox == NULL)
             {
                 _tprintf(_T("Open or create mailbox first.\n"));
@@ -251,7 +251,7 @@ int _tmain()
             mailbox->ReadMessage(number, TRUE);
             break;
 
-        case 6:
+        case 6:                                     //видалееея конкретного повідомлення
             if (!mailboxOpened || mailbox == NULL)
             {
                 _tprintf(_T("Open or create mailbox first.\n"));
@@ -277,7 +277,7 @@ int _tmain()
             mailbox->DeleteMessage(number);
             break;
 
-        case 7:
+        case 7:                                         //видалення всіх повідомлень
             if (!mailboxOpened || mailbox == NULL)
             {
                 _tprintf(_T("Open or create mailbox first.\n"));
@@ -299,7 +299,7 @@ int _tmain()
             mailbox->DeleteAllMessages();
             break;
 
-        case 8:
+        case 8:                                         //показати кількість повідомлень
             if (!mailboxOpened || mailbox == NULL)
             {
                 _tprintf(_T("Open or create mailbox first.\n"));
@@ -321,14 +321,14 @@ int _tmain()
             _tprintf(_T("Message count: %lu\n"), mailbox->GetMessageCount());
             break;
 
-        case 9:
+        case 9:                                 //кількість скриньок
             _tprintf(
                 _T("Total mailboxes in directory: %lu\n"),
                 Mailbox::GetMailboxCount(directory)
             );
             break;
 
-        case 10:
+        case 10:                                //пеервірка цілісності
             if (!mailboxOpened || mailbox == NULL)
             {
                 _tprintf(_T("Open or create mailbox first.\n"));
